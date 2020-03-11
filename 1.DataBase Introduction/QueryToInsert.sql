@@ -24,7 +24,7 @@ SELECT * FROM Message_records
 SELECT message_text FROM Message_records as m  JOIN [dbo].[User] as u on m.ID_User = u.ID
 
 
-ALTER TABLE Chat ALTER COLUMN ChatRoomName NVARCHAR(255) NOT NULL UNIQUE CHECK (ChatRoomName LIKE '%[a-Z][1-9]%')
+-- ALTER TABLE Chat ALTER COLUMN ChatRoomName NVARCHAR(255) NOT NULL UNIQUE CHECK (ChatRoomName LIKE '%[a-Z][1-9]%')
 
 
 
