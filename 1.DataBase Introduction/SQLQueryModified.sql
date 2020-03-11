@@ -40,7 +40,7 @@ CREATE TABLE BlockList
 CREATE TABLE Chat
 (
 	ID BIGINT IDENTITY (1,1) NOT NULL,
-	ChatRoomName NVARCHAR(255) CHECK (ChatRoomName NOT LIKE '%[^A-Z]%') ,
+	ChatRoomName NVARCHAR(255) NOT NULL UNIQUE CHECK (ChatRoomName LIKE '%[a-Z]%') ,
 	Created DATETIME2 DEFAULT GETDATE(),
 	Active BIT DEFAULT 0,
 	AdminRoom BIGINT NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE Message_records(
 	Chat_Name NVARCHAR(255) NOT NULL,
 	PRIMARY KEY (ID),
 	FOREIGN KEY(ID_User) REFERENCES  [User](ID),
-	FOREIGN KEY (Chat_Name) REFERENCES [Chat](ChatRoomName)
+	FOREIGN KEY (Chat_Name) REFERENCES Chat(ChatRoomName) ON UPDATE CASCADE
 );
 
 
@@ -74,9 +74,10 @@ CREATE TABLE Active_Users
 CREATE TABLE Media 
 (
 	ID_Attachment BIGINT IDENTITY (1,1) NOT NULL ,
-	AttachementName NVARCHAR(255) CHECK (AttachementName NOT LIKE '%[^A-Z]%') ,
+	AttachementName NVARCHAR(255) CHECK (AttachementName NOT LIKE '%[a-Z]%') ,
 	Size INT ,
 	ID_User BIGINT NOT NULL,
 	FOREIGN KEY(ID_User) REFERENCES  [User](ID),
 	PRIMARY KEY (ID_Attachment),
 );
+
