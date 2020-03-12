@@ -52,7 +52,6 @@ CREATE TABLE [Message]
 		
 	);
 
-
 IF OBJECT_ID(N'Attachment',N'U') IS NOT NULL
 	DROP TABLE [Attachments]
 ELSE
@@ -89,16 +88,3 @@ CREATE TABLE Subscriptions
 		FOREIGN KEY(ID_Chat) REFERENCES  [Chat](Chat_ID),
 		PRIMARY KEY(ID)
 	);
-
-
-IF OBJECT_ID(N'ChatMembers',N'U') IS NOT NULL
-	DROP TABLE [Participants]
-ELSE
-CREATE TABLE Participants
-	(
-		ID BIGINT IDENTITY(1,1) NOT NULL,
-		ID_Subscriber BIGINT NOT NULL,
-		FOREIGN KEY (ID_Subscriber) REFERENCES [Subscriptions](ID),
-		PRIMARY KEY(ID)
-	);
-
