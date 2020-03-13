@@ -51,16 +51,6 @@ BEGIN TRANSACTION
 ROLLBACK
 
 
-
-BEGIN TRANSACTION
-	UPDATE [dbo].[customers]
-	SET [dbo].[customers].Birth_Date = GETDATE()
-	FROM [dbo].customers c JOIN [dbo].packages p  ON c.pack_id = p.pack_id 
-	
-ROLLBACK
-
-
-
 BEGIN TRANSACTION
 	DELETE [dbo].customers FROM [dbo].customers LEFT JOIN [dbo].packages ON [dbo].customers.Customer_Id = [dbo].packages.pack_id
 	WHERE [dbo].customers.pack_id IS NULL OR [dbo].packages.sector_id IS NOT NULL
@@ -69,42 +59,37 @@ ROLLBACK
 
 
 
-
---MERGE INTO [dbo].customers as [TARGET]
---USING [dbo].packages AS [SOURCE]
---ON [TARGET].pack_id = [SOURCE].pack_id
---	WHEN MATCHED 
---		THEN
---		UPDATE SET [TARGET].monthly_discount = (( [TARGET].monthly_discount * ((SELECT  avg(max_price) FROM dbo.pack_grades)/2)) 
---		FROM [TARGET] as p JOIN dbo.customers as pk on p.pack_id = pk.pack_id)
+CREATE TABLE Table1(
 	
+	ID BIGINT IDENTITY(1,1),
+	Monthly_Payment DECIMAL ,
+	SectorName NVARCHAR(255),
+	PRIMARY KEY(ID)
+);
+
+CREATE TABLE Table2(
+	
+	ID BIGINT IDENTITY(1,1),
+	Monthly_Payment DECIMAL, 
+	SectorName NVARCHAR(255),
+	PRIMARY KEY(ID)
+);
 
 
---Consider rewriting an Update based on join with Merge Command
---MERGE INTO <target table> AS TGT 
---USING <source table> AS SRC 
---  ON <merge predicate> 
---WHEN MATCHED [AND <predicate>] --   two clauses allowed:  
---   THEN <action> --   one with UPDATE one with DELETE 
---WHEN NOT MATCHED [BY TARGET] 
---                 [AND <predicate>] -- one clause allowed: 
---   THEN INSERT...                                                  –-   if indicated, action must be INSERT 
---WHEN NOT MATCHED BY SOURCE 
---                [AND <predicate>]   -- two clauses allowed: 
---  THEN <action>; 
+INSERT INTO Table1 (Monthly_Payment,SectorName) 
+SELECT TOP 5 p.monthly_payment, s.sector_name from [dbo].packages p join [dbo].sectors s on p.sector_id=s.sector_id
+
+INSERT INTO Table2 (Monthly_Payment,SectorName) 
+SELECT TOP 5 p.monthly_payment, s.sector_name from [dbo].packages p join [dbo].sectors s on p.sector_id=s.sector_id ORDER BY p.monthly_payment
 
 
-BEGIN TRANSACTION
-
-MERGE [dbo].customers as [TARGET]
-USING (SELECT TOP 1 monthly_discount, p.pack_id
-       FROM [dbo].packages as p
-       INNER JOIN [dbo].customers as c
-           ON p.pack_id = c.pack_id) as joinedTables
-ON 
-    [TARGET].pack_id = joinedTables.pack_id
-WHEN MATCHED THEN
-       UPDATE
-       SET [TARGET].monthly_discount = cast(( [TARGET].monthly_discount * ((SELECT  avg(max_price) FROM dbo.pack_grades)/2)));
-
-ROLLBACK
+MERGE Table1 AS T 
+  USING Table2 AS S 
+ON (T.ID = S.ID) 
+WHEN MATCHED AND T.Monthly_Payment <> S.Monthly_Payment 
+  THEN UPDATE 
+    SET T.Monthly_Payment = S.Monthly_Payment
+WHEN NOT MATCHED BY TARGET
+  THEN INSERT (Monthly_Payment,SectorName ) VALUES(Monthly_Payment,SectorName)
+WHEN NOT MATCHED BY SOURCE
+  THEN DELETE;

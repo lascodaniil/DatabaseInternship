@@ -19,7 +19,7 @@ ELSE
 		FirstName NVARCHAR(255) NOT NULL,
 		LastName NVARCHAR(255)NOT NULL,
 		Email NVARCHAR(255) NOT NULL UNIQUE, 
-		PRIMARY KEY (Email)
+		PRIMARY KEY (ID)
 	);	
 
 
@@ -34,7 +34,6 @@ CREATE TABLE BlockList
 		UnblockedDate DATETIME2 
 		PRIMARY KEY(Email)
 	    FOREIGN KEY (Email) REFERENCES [User](Email) ON DELETE CASCADE
-
 	);
 
 
