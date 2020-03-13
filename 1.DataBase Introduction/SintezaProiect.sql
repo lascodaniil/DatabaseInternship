@@ -32,7 +32,7 @@ CREATE TABLE BlockList
 		Email NVARCHAR(255),
 		BlockedDate DATETIME2 DEFAULT GETDATE(),
 		UnblockedDate DATETIME2 
-		PRIMARY KEY(Email)
+		PRIMARY KEY(ID_BlockedUser)
 	    FOREIGN KEY (Email) REFERENCES [User](Email) ON DELETE CASCADE
 	);
 
