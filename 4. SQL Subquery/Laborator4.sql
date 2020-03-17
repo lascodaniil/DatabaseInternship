@@ -70,3 +70,31 @@ WHERE packages.monthly_payment < (SELECT MIN(packages.monthly_payment) FROM pack
 SELECT customers.First_Name, customers.monthly_discount, customers.pack_id FROM customers
 where customers.monthly_discount < (SELECT AVG(customers.monthly_discount) FROM customers)
 AND customers.pack_id = (SELECT customers.pack_id from customers where customers.First_Name LIKE 'Kevin')
+
+
+
+
+SELECT customers.First_Name, customers.monthly_discount, 
+CASE WHEN customers.[State] = 'California' THEN 'CA'
+	 WHEN customers.[State] = 'New York' THEN 'NY'
+	 ELSE customers.[State]
+	 END AS states
+FROM customers ORDER BY states
+
+
+
+SELECT customers.First_Name, customers.monthly_discount
+FROM customers ORDER BY 
+CASE WHEN customers.pack_id IS NOT NULL THEN customers.pack_id
+	 WHEN customers.monthly_discount >10 THEn customers.monthly_discount
+	 END;
+
+
+SELECT Customer_Id,pack_id from customers as c 
+where c.pack_id IN(SELECT pack_id from [dbo].packages as p WHERE c.pack_id=p.pack_id) ORDER BY pack_id
+
+
+SELECT Customer_Id, c.[State], c.pack_id FROM customers as c
+where c.monthly_discount < ALL(SELECT AVG(packages.monthly_payment)from packages where c.pack_id = packages.pack_id GROUP BY pack_id) 
+
+

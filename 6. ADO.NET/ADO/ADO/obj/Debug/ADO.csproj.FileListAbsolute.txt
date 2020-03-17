@@ -1,0 +1,15 @@
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\ADO.exe.config
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\ADO.exe
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\ADO.pdb
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\Microsoft.IdentityModel.Logging.dll
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\Microsoft.IdentityModel.Logging.xml
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\Microsoft.IdentityModel.Protocols.xml
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\Microsoft.IdentityModel.Tokens.xml
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\obj\Debug\ADO.csprojAssemblyReference.cache
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\obj\Debug\ADO.csproj.CopyComplete
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\obj\Debug\ADO.exe
+C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\ADO\obj\Debug\ADO.pdb

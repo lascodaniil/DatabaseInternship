@@ -102,14 +102,17 @@ INSERT INTO Table2 (Monthly_Payment,SectorName)
 	from [dbo].packages p join [dbo].sectors s on p.sector_id=s.sector_id 
 	ORDER BY p.monthly_payment
 
+SELECT * FROM Table1
+SELECT * FROM Table2 
+	
 
 MERGE Table1 AS T 
   USING Table2 AS S 
 ON (T.ID = S.ID) 
-WHEN MATCHED AND T.Monthly_Payment <> S.Monthly_Payment 
+WHEN MATCHED AND (T.Monthly_Payment <> S.Monthly_Payment OR T.Monthly_Payment > S.Monthly_Payment OR T.SectorName <> S.SectorName)
   THEN UPDATE 
-    SET T.Monthly_Payment = S.Monthly_Payment
-WHEN NOT MATCHED BY TARGET
+    SET T.Monthly_Payment = S.Monthly_Payment, T.SectorName = S.SectorName
+WHEN NOT MATCHED BY TARGET 
   THEN INSERT (Monthly_Payment,SectorName ) VALUES(Monthly_Payment,SectorName)
 WHEN NOT MATCHED BY SOURCE
   THEN DELETE;
@@ -117,7 +120,23 @@ WHEN NOT MATCHED BY SOURCE
 
 
 
-SELECT customers.pack_id, customers.Birth_Date FROM customers
-GROUP BY customers.pack_id,customers.Birth_Date HAVING MONTH(customers.Birth_Date) > 11
+SELECT packages.speed, AVG(packages.monthly_payment)
+FROM packages GROUP BY packages.speed 
 
-SELECT customers.Customer_Id FROM customers ORDER BY customers.monthly_discount
+SELECT customers.pack_id, COUNT(customers.Customer_Id) FROM customers
+where customers.monthly_discount > 20
+GROUP BY customers.pack_id 
+
+
+
+SELECT A.pack_id, MAX(A.average) 
+FROM (SELECT customers.pack_id , customers.[State], AVG(customers.monthly_discount)  AS average FROM customers GROUP BY customers.[State],customers.pack_id ) as A
+GROUP BY a.pack_id
+
+
+SELECT MAX(customers.monthly_discount), MIN(customers.monthly_discount),AVG(customers.monthly_discount) FROM customers
+
+SELECT dbo.packages.speed, COUNT(*)  FROM packages GROUP BY dbo.packages.speed having COUNT(*)  >8
+
+
+SELECT customers.[State] , MAX(customers.monthly_discount) AS minimum FROM customers GROUP BY customers.[State]
