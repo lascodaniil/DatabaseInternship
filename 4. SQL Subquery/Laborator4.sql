@@ -72,7 +72,7 @@ where customers.monthly_discount < (SELECT AVG(customers.monthly_discount) FROM 
 AND customers.pack_id = (SELECT customers.pack_id from customers where customers.First_Name LIKE 'Kevin')
 
 
-
+-- PRACTICE
 
 SELECT customers.First_Name, customers.monthly_discount, 
 CASE WHEN customers.[State] = 'California' THEN 'CA'
@@ -98,3 +98,9 @@ SELECT Customer_Id, c.[State], c.pack_id FROM customers as c
 where c.monthly_discount < ALL(SELECT AVG(packages.monthly_payment)from packages where c.pack_id = packages.pack_id GROUP BY pack_id) 
 
 
+SELECT customers.Customer_Id, 
+CASE WHEN sectors.sector_id=1 THEN 20 
+ELSE customers.monthly_discount END AS monthly_discount
+FROM customers join packages on packages.pack_id=customers.pack_id JOIN sectors on sectors.sector_id=packages.sector_id
+
+-- PRACTICE

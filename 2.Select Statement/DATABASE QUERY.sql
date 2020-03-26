@@ -22,3 +22,6 @@ GROUP BY First_Name, Last_Name,[State], p.sector_id ORDER BY P.sector_id ASC ,[S
 
 SELECT * from [dbo].[customers] c LEFT OUTER JOIN [dbo].[packages] p on c.pack_id = p.pack_id
 
+
+
+

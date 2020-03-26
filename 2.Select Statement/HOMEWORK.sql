@@ -60,3 +60,26 @@
 --Modify last query to display all packages and all customers.
 --SELECT p.pack_id, c.First_Name + ' ' + c.Last_Name AS CustomerName FROM [dbo].[packages] p FULL OUTER JOIN  [dbo].[customers] c 
 --ON p.pack_id = c.pack_id
+
+
+
+
+SELECT c.Last_Name, First_Name, c.pack_id, p.speed, p.monthly_payment, s.sector_name
+FROM dbo.customers as c join dbo.packages as p on c.pack_id= p.pack_id 
+join dbo.sectors as s on p.sector_id=s.sector_id WHERE p.monthly_payment >30;
+
+
+SELECT * FROM customers AS c FULL OUTER JOIN packages as p
+on c.pack_id = p.pack_id
+
+
+SELECT  p.speed , count(*) as numbers  from packages as p
+full outer join dbo.customers as c on p.pack_id=c.pack_id 
+GROUP BY p.speed having speed is not null 
+order by numbers
+
+
+
+SELECT dbo.customers.monthly_discount, dbo.sectors.sector_name
+from dbo.customers cross join dbo.sectors
+order by monthly_discount

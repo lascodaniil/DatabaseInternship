@@ -12,7 +12,6 @@ namespace ADO
 
     public class OperationADO
     {
-
         public static SqlDataAdapter DataAdapter = new SqlDataAdapter();
         public static string BlockListTable =
                 @"CREATE TABLE BlockList
@@ -31,18 +30,37 @@ namespace ADO
 	            )";
 
 
-        public static SqlDataAdapter Adapter(SqlConnection sqlConnection)
+        public static DataTable UserDataTable()
         {
-            //CREATE TABLES INTO DATABASE
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("ID",typeof(int)).AutoIncrement=true;
+            dataTable.Columns.Add("FirstName", typeof(string));
+            dataTable.Columns.Add("LastName", typeof(string));
+            dataTable.Columns.Add("Email", typeof(string));
+            dataTable.PrimaryKey = new DataColumn[] {dataTable.Columns["ID"]};
+            
+            return dataTable;
+        }
+
+
+        public static void CreateTablesIntoDatabase(SqlConnection sqlConnection)
+        {
             SqlCommand UserBlockListCommand = new SqlCommand(BlockListTable, sqlConnection);
             SqlCommand UserTableComand = new SqlCommand(UserTable, sqlConnection);
-            // QUERY TO CREATE TABLES
+            try
+            {
+                UserTableComand.ExecuteNonQuery();
+                UserBlockListCommand.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Tables exists in database");
+            }
+        }
 
-            //UserTableComand.ExecuteNonQuery();
-            //UserBlockListCommand.ExecuteNonQuery();
-
+        public static SqlDataAdapter Adapter(SqlConnection sqlConnection)
+        {
             //INSERT 
-
             SqlCommand unitCommand = new SqlCommand(
             @"INSERT INTO [dbo].[User] (FirstName,LastName,Email) VALUES (@FirstName,@LastName, @Email); SET @ID = @@IDENTITY;", sqlConnection);
             unitCommand.Parameters.Add("@FirstName", SqlDbType.VarChar, 255, "FirstName");
@@ -70,9 +88,7 @@ namespace ADO
             //DELETE 
             unitCommand = new SqlCommand(@"DELETE FROM  [dbo].[User] WHERE Email = @Email", sqlConnection);
             unitCommand.Parameters.Add("@Email", SqlDbType.VarChar, 255, "Email");
-
-            // parameter = unitCommand.Parameters.Add("@ID", SqlDbType.BigInt, 1, "ID");
-            parameter.SourceVersion = DataRowVersion.Original;
+             parameter.SourceVersion = DataRowVersion.Original;
             DataAdapter.DeleteCommand = unitCommand;
             return DataAdapter;
         }
@@ -81,7 +97,10 @@ namespace ADO
 
     class Program
     {
-        public static string connectionString;
+        public static string connectionString=null;
+        public static string ReadUsers = @"C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\Insert.txt";
+        public static string UpdateUsers = @"C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\Update.txt";
+        public static string DeleteUser = @"C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\Update.txt";
         static Program()
         {
             connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -93,15 +112,21 @@ namespace ADO
             using (var sqlConnection = new SqlConnection(connectionString))
             {
                 sqlConnection.Open();
+                OperationADO.CreateTablesIntoDatabase(sqlConnection); // create 2 tables
                 SqlDataAdapter dataAdapter = OperationADO.Adapter(sqlConnection); // adapter
-                DataTable users = new DataTable(); // OPERATION FOR USER
+                DataTable users = OperationADO.UserDataTable(); // CREATE DATATABLE FOR USER
+
+
+                DataSet dataSet = new DataSet("DefaultConnection");
+                dataSet.Tables.Add(users);
                 dataAdapter.Fill(users);
+                
+                
                 while (true)
                 {
                     int i = Convert.ToInt32(Console.ReadLine());
                     switch (i)
                     {
-                        
                         case 1:
                             // SELECT
                             foreach(DataRow row in users.Rows)
@@ -118,7 +143,7 @@ namespace ADO
                             break;
                         case 2:
                             // INSERT
-                            string[] lines = System.IO.File.ReadAllLines(@"C:\Users\Daniil\Desktop\Database\6. ADO.NET\ADO\Insert.txt");
+                            string[] lines = System.IO.File.ReadAllLines(ReadUsers);
                             foreach(var c in lines)
                             {
                                 var datas = c.Split(',').ToList();
@@ -132,45 +157,43 @@ namespace ADO
                         case 3:
 
                             //UPDATE
+                            string []line = System.IO.File.ReadAllLines(UpdateUsers);
+                            var UserData = line[0].Split(',');
+                            var insertData = line[1].Split(',');
+
                             foreach (DataRow row in users.Rows)
                             {
                                 foreach (DataColumn column in users.Columns)
                                 {
-                                    if (row[column].Equals("lascodaniiil@gmail.com"))
+                                    if (row[column].Equals(UserData[2]))
                                     {
-                                        // read from file
+                                        row["FirstName"] = insertData[0];
+                                        row["LastName"] = insertData[1];
+                                        row["Email"] = insertData[2];
+                                        Console.WriteLine("UPDATE OPERATION IS SUCCESFUL");
+
                                     }
                                 }
-                                Console.WriteLine("++++");
                             }
-
-                            
                             break;
                         case 4:
 
-                            // DataRow deleted = users.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["ID"]) == 6);
-                            //  deletedRow.Delete();
-                            //DELETE
+                            string[] deleteuser = System.IO.File.ReadAllLines(DeleteUser);
+                            var UsertToDelete = deleteuser[0].Split(',');
+                            // DELETE
                             foreach (DataRow row in users.Rows)
                             {
-                                Console.WriteLine("++++");
-                                foreach (DataColumn column in users.Columns)
+                                if(row["Email"].ToString() == UsertToDelete[2])
                                 {
-                                    if (row[column].Equals("ignateugeniu@gmail.com")) // read from file
-                                    {
-                                        Console.WriteLine(row[column]);
-                                        row.Delete();
-                                    }
+                                    row.Delete();
+                                    Console.WriteLine("DELETED COMMAND EXECUTED");
                                 }
-                                Console.WriteLine("++++");
                             }
-
                             break;
                     }
                     dataAdapter.Update(users); // BASE OPERATION
-
                 }
-                sqlConnection.Close();
+                
             }
             Console.ReadLine();
         }
