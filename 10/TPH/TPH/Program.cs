@@ -60,9 +60,7 @@ namespace TPH
                                 var databaseValue = databaseValues[property];
 
                             }
-                           // entry.OriginalValues.SetValues(databaseValues);
                         }
-                        
                     }
                 }
             }

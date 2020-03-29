@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Services\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -21,7 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ServerPart.Domain\ServerPart.Domain.csproj" />
     <ProjectReference Include="..\ServerPart.EF\ServerPart.EF.csproj" />
-    <ProjectReference Include="..\ServerPart.Identity\ServerPart.Identity.csproj" />
   </ItemGroup>
 
 </Project>

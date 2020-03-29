@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ServerPart.Domain.Entities;
 using ServerPart.API.EFDbContext;
 
 namespace ServerPart.API.Repositories
@@ -49,13 +48,8 @@ namespace ServerPart.API.Repositories
     }
 
 
-    public interface IStudentRepositoy
-    { }
 
-    public class StudentRepository :  GenericRepostiry<Student>, IStudentRepositoy
-    {
-        FLCenterDbContext fLCenterDbContext = new FLCenterDbContext();
-    }
+
 
 
 

@@ -13,8 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ServerPart.API.EFDbContext;
 using ServerPart.API.Repositories.Interfaces;
-using ServerPart.Identity;
-
 namespace ServerPart.API
 {
     public class Startup
@@ -37,7 +35,7 @@ namespace ServerPart.API
             });
 
           //  services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<FLCenterDbContextIdentity>().AddDefaultTokenProviders();
-            services.AddDbContext<FLCenterDbContextIdentity>(options => options.UseSqlServer(Configuration.GetConnectionString("FLCenterDbContextIdentity")));
+            services.AddDbContext<FLCenterDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FLCenterDbContextIdentity")));
            // services.AddDbContext<FLCenterDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("FLCenterDbContext")));
 
             services.AddMvc();

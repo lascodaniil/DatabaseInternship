@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServerPart.API.EFDbContext;
+using ServerPart.API.Repositories;
 using ServerPart.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,17 @@ namespace ServerPart.API.Controllers
     [Route("api/[controller]")]
     public class CourseController : ControllerBase
     {
+        CourseRepository courseRepository = new CourseRepository();
+        public List<Course> GetAll()
+        {
+            return null;
+        }
 
-        
-
+        [HttpGet]
+        public Course Get(int id)
+        {
+            return courseRepository.GetByID(id);
+        }
 
     }
 }

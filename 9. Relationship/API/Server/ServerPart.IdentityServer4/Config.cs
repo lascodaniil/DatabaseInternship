@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using IdentityServer4.Models;
 using Secret = IdentityServer4.Models.Secret;
 using IdentityServer4.Test;
+using IdentityServer4;
+using static IdentityServer4.IdentityServerConstants;
 
 namespace ServerPart.IdentityServer4
 {
@@ -16,10 +18,9 @@ namespace ServerPart.IdentityServer4
         {
             return new List<ApiResource>
             {
-                new ApiResource("ServerPart.API" , "ServerPart.API")
+                new ApiResource("ServerPart.API" )
             };
         }
-
 
         public static IEnumerable<Client> GetClients()
         {
@@ -40,7 +41,8 @@ namespace ServerPart.IdentityServer4
                     {
                         new Secret("secret1".Sha256())
                     },
-                    AllowedScopes = { "ServerPart.API" }
+                    AllowedScopes = { "ServerPart.API",StandardScopes.Address },
+                    AllowOfflineAccess=true,
                 }
             };
         }

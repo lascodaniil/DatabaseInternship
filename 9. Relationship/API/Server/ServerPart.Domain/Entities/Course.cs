@@ -11,7 +11,6 @@ namespace ServerPart.Domain.Entities
         public DateTime StartDate { get; set; }
         public DateTime? StopDate { get; set; }
         public string Language { get; set; }
-
         public int LevelId { get; set; }
         public virtual Level Levels { get; set; }
         public virtual ICollection<StudentCourse> StudentCourse { get; set; }

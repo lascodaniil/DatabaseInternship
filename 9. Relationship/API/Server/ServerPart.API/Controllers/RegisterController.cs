@@ -17,15 +17,15 @@ namespace ServerPart.API.Controllers
         [HttpPost]
         public IActionResult Add(/*[FromBody] Student student*/)
         {
-            StudentRepository studentRepository = new StudentRepository();
+           // GenericRepository studentRepository = new GenericRepository();
             Student student = new Student { /*Id=3,*/ FirstName = "Ceban", LastName = "Daniil", Email = "lascodaniil@gmail.com" };
 
-            studentRepository.Add(student);
+           // studentRepository.Add(student);
            // studentRepository.Remove(student);
            // studentRepository.Update(student);
 
             //studentRepository.Add(student);
-            studentRepository.SaveAll();
+           // studentRepository.SaveAll();
             
 
             return Ok();

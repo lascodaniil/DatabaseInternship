@@ -21,6 +21,7 @@ namespace ServerPart.IdentityServer4
                 .AddTestUsers(Config.Users().ToList())
                 .AddInMemoryApiResources(Config.GetAllApiResources())
                 .AddInMemoryClients(Config.GetClients());
+                
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
